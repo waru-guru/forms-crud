@@ -40,7 +40,7 @@
                     <a class="nav-link" href="{% url 'add-product-page' %}">ADD PRODUCT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">REGISTER</a>
+                    <a class="nav-link" href="{% url 'register-page' %}">REGISTER</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">LOGIN</a>
@@ -53,6 +53,10 @@
     </nav>
 </section>
 <section>
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+
     {% block content %}
 
     {% endblock %}

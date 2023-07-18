@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Product
 from django.contrib import messages
+from .forms import UserRegistrationForm
 
 
 def index(request):
@@ -54,3 +55,15 @@ def update_product(request, id):
         messages.success(request, 'Product updated successfully')
         return redirect('all-products')
     return render(request, 'update-product.html', context)
+
+
+def register(request):
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User registered successfully')
+            return redirect('register-page')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'register.html', {'form': form})
