@@ -1,0 +1,18 @@
+{% extends 'master.html' %}
+{% load static %}
+{% load crispy_forms_tags%}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <h1 class="text-center text-dark">Login Here!</h1>
+    <form class="register-form" action="{% url 'login-page' %}" method="post">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Start Session</legend>
+            {{ form | crispy }}
+        </fieldset>
+        <div class="form-group">
+            <input class="btn btn-info" value="Login" type="submit">
+        </div>
+    </form>
+{% endblock %}
