@@ -33,29 +33,35 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">CONTACT US</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'all-products' %}">PRODUCTS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'add-product-page' %}">ADD PRODUCT</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register-page' %}">REGISTER</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login-page' %}">LOGIN</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">BLOG</a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all-products' %}">PRODUCTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add-product-page' %}">ADD PRODUCT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout-page' %}">LOGOUT</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register-page' %}">REGISTER</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login-page' %}">LOGIN</a>
+                    </li>
+
+                {% endif %}
+
+
             </ul>
         </div>
     </nav>
 </section>
 <section>
-{% for message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
 
     {% block content %}
 
