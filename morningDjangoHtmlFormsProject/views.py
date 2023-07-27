@@ -1,3 +1,10 @@
+from __future__ import unicode_literals
+from django_daraja.mpesa import utils
+from django.http import HttpResponse, JsonResponse
+from django.views.generic import View
+from django_daraja.mpesa.core import MpesaClient
+from decouple import config
+from datetime import datetime
 from django.shortcuts import render, redirect
 from .models import Product
 from django.contrib import messages
@@ -70,3 +77,28 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
+def shop(request):
+    all_products = Product.objects.all()
+    context = {"all_products": all_products}
+    return render(request, 'shop.html', context)
+
+mpesa_client = MpesaClient()
+stk_push_callback_url = 'https://api.darajambili.com/express-payment'
+
+def auth_success(request):
+    response = mpesa_client.access_token()
+    return JsonResponse(response, safe=False)
+
+
+def pay(request, id):
+    product = Product.objects.get(id=id)
+    context = {"product": product}
+    if request.method == "POST":
+        amount = request.POST.get('p-price')
+        amount = int(amount)
+        phone_number = request.POST.get('c-phone')
+        account_ref = "PAYMENT_1"
+        transaction_desc = "Paying for a product"
+        transaction = mpesa_client.stk_push(phone_number, amount, account_ref, transaction_desc, stk_push_callback_url)
+        return JsonResponse(transaction.response_description, safe=False)
+    return render(request, 'pay.html', context)
